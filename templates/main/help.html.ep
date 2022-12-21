@@ -1,7 +1,6 @@
 % layout 'default';
       <ul>
-        <li>What?</li>
-        <li>Why?</li>
-        <li>How?</li>
-        <li>When?</li>
+        <li>What? <a href="https://openai.com/">OpenAI</a> - the company</li>
+        <li>Why? For fun/curiosity</li>
+        <li>How? By using the <a href="https://metacpan.org/pod/OpenAI::API">OpenAI::API</a> Perl module</li>
       </ul>
