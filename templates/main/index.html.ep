@@ -7,3 +7,12 @@
         </div>
         <input type="submit" class="btn btn-sm btn-primary" name="submit" value="Submit" title="Submit form">
       </form>
+% if (@$responses) {
+      <p></p>
+      <b>Responses:</b>                                                                                                                                                      
+      <ol>
+%   for my $r (@$responses) {
+        <li><%= $r %></li>
+%   }
+      </ol>
+% }
