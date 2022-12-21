@@ -5,8 +5,10 @@ use OpenAI::API ();
 
 sub index ($self) {
   my $prompt = $self->param('prompt') || '';
-  my $responses = $self->every_param('responses');
+  my $responses = $self->param('responses');
   my @data = _transform($responses);
+#use Data::Dumper::Compact qw(ddc);
+#warn __PACKAGE__,' L',__LINE__,' ',ddc(\@data, {max_width=>128});
   $self->render(
     prompt    => $prompt,
     responses => \@data,
@@ -51,7 +53,7 @@ sub help ($self) { $self->render }
 # transform the given string into a data structure
 sub _transform {
   my ($string) = @_;
-  my @chunks = split /,/, $string;
+  my @chunks = split /\//, $string;
   my @data;
   for my $chunk (@chunks) {
     my @parts = split /\|/, $chunk;
@@ -71,7 +73,7 @@ sub _remap {
   for my $datum (@data) {
     push @remapped, join('|', $datum->{prompt}, $datum->{text}, $datum->{stamp});
   }
-  return join(',', @remapped);
+  return join('/', @remapped);
 }
 
 1;
