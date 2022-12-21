@@ -2,7 +2,8 @@
       <form action="<%= url_for('update') %>" method="post">
         <div class="form-group form-row">
           <label for="prompt"><b>Prompt:</b></label>
-          <input type="text" class="form-control form-control-sm" id="prompt" name="prompt" value="<%= $prompt %>" placeholder="The text prompt" title="The text prompt" aria-describedby="promptHelp">
+          <textarea class="form-control" id="prompt" name="prompt" cols="" rows="" placeholder="Text prompt" aria-describedby="promptHelp"><%= $prompt %></textarea>
+          <br>
           <small id="promptHelp" class="form-text text-muted">Required</small>
         </div>
         <div class="form-group form-row">
