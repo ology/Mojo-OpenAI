@@ -8,8 +8,6 @@
       </form>
 % if (@$responses) {
       <p></p>
-      <b>History:</b>                                                                                                                                                      
-      <p></p>
       <div class="accordion" id="accordionHistory">
 %   my $counter = 0;
 %   for my $r (@$responses) {
