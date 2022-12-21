@@ -4,8 +4,6 @@ use Test::Exception;
 use Test::More;
 use Test::Mojo;
 
-use_ok 'OpenAIAPI::Controller::Main';
-
 my $t = Test::Mojo->new('OpenAIAPI');
 
 $t->ua->max_redirects(1);
