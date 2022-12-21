@@ -25,13 +25,13 @@ subtest update => sub {
   ;
   SKIP: {
     skip 'Not testing live', 4;
+    $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
+      ->status_is(200)
+      ->content_like(qr/Invalid submission/)
+    ;
     $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
       ->status_is(200)
       ->element_exists('textarea[name=prompt][data-info=xyz]')
-    ;
-    $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
-      ->status_is(200)
-      ->content_like(qr/Invalid/)
     ;
   };
 };
