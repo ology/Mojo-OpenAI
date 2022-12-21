@@ -7,8 +7,6 @@ sub index ($self) {
   my $prompt = $self->param('prompt') || '';
   my $responses = $self->param('responses');
   my @data = _transform($responses);
-#use Data::Dumper::Compact qw(ddc);
-#warn __PACKAGE__,' L',__LINE__,' ',ddc(\@data, {max_width=>128});
   $self->render(
     prompt    => $prompt,
     responses => \@data,
