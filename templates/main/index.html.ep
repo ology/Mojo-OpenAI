@@ -4,7 +4,7 @@
           <label for="prompt"><b>Prompt:</b></label>
           <textarea class="form-control" id="prompt" name="prompt" cols="" rows="5" placeholder="Text prompt" aria-describedby="promptHelp"><%= $prompt %></textarea>
           <br>
-          <small id="promptHelp" class="form-text text-muted">1 to 255 characters</small>
+          <small id="promptHelp" class="form-text text-muted">Required</small>
         </div>
         <input type="submit" class="btn btn-sm btn-primary" name="submit" value="Submit" title="Submit form">
       </form>
