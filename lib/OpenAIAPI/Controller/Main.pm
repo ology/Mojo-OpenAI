@@ -2,14 +2,15 @@ package OpenAIAPI::Controller::Main;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use OpenAI::API ();
+use Storable qw(retrieve store);
+
+use constant DATFILE => 'openaiapi.dat';
 
 sub index ($self) {
-  my $prompt = $self->param('prompt') || '';
-  my $responses = $self->param('responses');
-  my @data = _transform($responses);
+  store [], DATFILE unless -e DATFILE;
+  my $history = retrieve(DATFILE);
   $self->render(
-    prompt    => $prompt,
-    responses => \@data,
+    responses => $history,
   );
 }
 
@@ -20,7 +21,6 @@ sub update ($self) {
   my $prompt = $v->param('prompt');
   if ($v->error('prompt')) {
     $self->flash(error => 'Invalid submission');
-    $prompt = '';
   }
   else {
     my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
@@ -39,10 +39,13 @@ sub update ($self) {
         (my $text = $choice->{text}) =~ s/\n/<p><\/p>/g;
         push @responses, { prompt => $prompt, text => $text, stamp => time() };
     }
+    store [], DATFILE unless -e DATFILE;
+    my $history = retrieve(DATFILE);
+    unshift @$history, @responses;
+    store $history, DATFILE;
   }
-  my $responses = _remap(@responses);
   $self->redirect_to(
-    $self->url_for('index')->query(prompt => $prompt, responses => $responses)
+    $self->url_for('index')
   );
 }
 
@@ -51,7 +54,7 @@ sub help ($self) { $self->render }
 # transform the given string into a data structure
 sub _transform {
   my ($string) = @_;
-  my @chunks = split /\//, $string;
+  my @chunks = split /\//, ($string || '');
   my @data;
   for my $chunk (@chunks) {
     my @parts = split /\|/, $chunk;
