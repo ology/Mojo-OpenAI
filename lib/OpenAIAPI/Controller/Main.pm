@@ -17,6 +17,7 @@ sub update ($self) {
   $v->required('prompt')->size(0, 10);
   $v->required('prompt', 'trim');
   my $prompt = $v->param('prompt');
+  my @responses;
   if ($v->error('prompt')) {
     $self->flash(error => 'Invalid prompt!');
     $prompt = '';
@@ -32,7 +33,6 @@ sub update ($self) {
         frequency_penalty => 0,
         presence_penalty  => 0
     );
-    my @responses;
     for my $choice ($response->{choices}->@*) {
         push @responses, $choice->{text};
     }
