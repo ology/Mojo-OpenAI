@@ -9,20 +9,20 @@ $t->ua->max_redirects(1);
 
 $t->get_ok($t->app->url_for('index'))
   ->status_is(200)
-  ->content_like(qr/Thing:/)
-  ->element_exists('label[for=thing]')
-  ->element_exists('input[name=thing][type=text]')
+  ->content_like(qr/Prompt:/)
+  ->element_exists('label[for=prompt]')
+  ->element_exists('textarea[name=prompt]')
   ->element_exists('input[type=submit]');
 ;
 
-$t->post_ok($t->app->url_for('index'), form => { thing => 'xyz' })
+$t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
   ->status_is(200)
-  ->element_exists('input[name=thing][type=text][value=xyz]')
+  ->element_exists('textarea[name=prompt]')
 ;
 
-$t->post_ok($t->app->url_for('index'), form => { thing => 'x' x 99 })
+$t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
   ->status_is(200)
-  ->content_like(qr/Invalid thing/)
+  ->content_like(qr/Invalid/)
 ;
 
 $t->get_ok($t->app->url_for('help'))
