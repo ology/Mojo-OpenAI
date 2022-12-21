@@ -13,10 +13,10 @@
   </head>
   <body>
     <div class="container padpage">
-% if (my $error = flash 'error') {
-      <h1 class="danger"><%= $error %></h1>
-% }
       <h3><a href="<%= url_for('index') %>"><%= title %></a></h3>
+% if (my $error = flash 'error') {
+      <h4 class="danger"><%= $error %></h4>
+% }
 <%= content %>
       <p></p>
       <div class="small">
