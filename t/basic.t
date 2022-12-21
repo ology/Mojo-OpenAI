@@ -21,12 +21,12 @@ subtest update => sub {
     ->status_is(200)
     ->content_like(qr/Invalid submission/)
   ;
+  $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
+    ->status_is(200)
+    ->content_like(qr/Invalid submission/)
+  ;
   SKIP: {
-    skip 'Not testing live', 5;
-    $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
-      ->status_is(200)
-      ->content_like(qr/Invalid submission/)
-    ;
+    skip 'Not testing live', 3;
     $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
       ->status_is(200)
       ->element_exists('div[class=card]')
