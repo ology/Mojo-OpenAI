@@ -33,7 +33,10 @@ sub update ($self) {
         presence_penalty  => 0
     );
     for my $choice ($response->{choices}->@*) {
-        push @responses, $choice->{text};
+        $choice->{text} =~ s/^\s+//;
+        $choice->{text} =~ s/\s+$//;
+        (my $text = $choice->{text}) =~ s/\n/<p><\/p>/g;
+        push @responses, $text;
     }
   }
   $self->redirect_to(
