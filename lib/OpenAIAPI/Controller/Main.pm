@@ -14,7 +14,7 @@ sub index ($self) {
 
 sub update ($self) {
   my $v = $self->validation;
-  $v->required('prompt');
+  $v->required('prompt')->size(1, 255);
   my $prompt = $v->param('prompt');
   my @responses;
   if ($v->error('prompt')) {
