@@ -37,6 +37,7 @@ sub update ($self) {
         $choice->{text} =~ s/^\s+//;
         $choice->{text} =~ s/\s+$//;
         (my $text = $choice->{text}) =~ s/\n/<p><\/p>/g;
+        $prompt =~ s/\n/<p><\/p>/g;
         push @responses, { prompt => $prompt, text => $text, stamp => time() };
     }
     store [], DATFILE unless -e DATFILE;
