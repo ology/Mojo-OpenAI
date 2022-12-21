@@ -55,30 +55,4 @@ sub update ($self) {
 
 sub help ($self) { $self->render }
 
-# transform the given string into a data structure
-sub _transform {
-  my ($string) = @_;
-  my @chunks = split /\//, ($string || '');
-  my @data;
-  for my $chunk (@chunks) {
-    my @parts = split /\|/, $chunk;
-    push @data, {
-      prompt => $parts[0],
-      text   => $parts[1],
-      stamp  => $parts[2],
-    };
-  }
-  return @data;
-}
-
-# remap a string from the datastructure
-sub _remap {
-  my (@data) = @_;
-  my @remapped;
-  for my $datum (@data) {
-    push @remapped, join('|', $datum->{prompt}, $datum->{text}, $datum->{stamp});
-  }
-  return join('/', @remapped);
-}
-
 1;
