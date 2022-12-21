@@ -1,6 +1,5 @@
 use Mojo::Base -strict;
 
-use Test::Exception;
 use Test::More;
 use Test::Mojo;
 
