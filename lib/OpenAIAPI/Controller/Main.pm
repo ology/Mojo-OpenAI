@@ -41,8 +41,10 @@ sub update ($self) {
     }
     store [], DATFILE unless -e DATFILE;
     my $history = retrieve(DATFILE);
+    $history = [ grep { defined $_ } @$history ];
     unshift @$history, @responses;
-    $history = [ @$history[0 .. 19] ];
+    my $n = $#$history > 19 ? 19 : $#$history;
+    $history = [ @$history[0 .. $n] ];
     store $history, DATFILE;
   }
   $self->redirect_to(
