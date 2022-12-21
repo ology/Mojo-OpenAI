@@ -13,7 +13,6 @@ $t->ua->max_redirects(1);
 subtest index => sub {
   $t->get_ok($t->app->url_for('index'))
     ->status_is(200)
-    ->element_exists('label[for=prompt]')
     ->element_exists('textarea[name=prompt]')
     ->element_exists('input[type=submit]');
   ;
