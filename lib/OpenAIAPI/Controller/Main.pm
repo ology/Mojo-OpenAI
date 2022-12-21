@@ -42,6 +42,7 @@ sub update ($self) {
     store [], DATFILE unless -e DATFILE;
     my $history = retrieve(DATFILE);
     unshift @$history, @responses;
+    $history = [ @$history[0 .. 19] ];
     store $history, DATFILE;
   }
   $self->redirect_to(
