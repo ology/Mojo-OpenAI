@@ -29,7 +29,7 @@ sub update ($self) {
         temperature       => 0.5,
         top_p             => 1,
         frequency_penalty => 0,
-        presence_penalty  => 0
+        presence_penalty  => 0,
     );
     for my $choice ($response->{choices}->@*) {
         $choice->{text} =~ s/^\s+//;
