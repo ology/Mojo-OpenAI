@@ -13,7 +13,7 @@
       <b>Responses:</b>                                                                                                                                                      
       <ol>
 %   for my $r (@$responses) {
-        <li><%= $r %></li>
+        <li><%== $r %></li>
 %   }
       </ol>
 % }
