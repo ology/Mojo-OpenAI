@@ -5,6 +5,7 @@ use OpenAI::API ();
 
 sub index ($self) {
   my $prompt = $self->param('prompt') || '';
+  my $model = $self->param('model') || 'text-davinci-003';
   my $responses = $self->every_param('responses');
   $self->render(
     prompt    => $prompt,
@@ -14,18 +15,20 @@ sub index ($self) {
 
 sub update ($self) {
   my $v = $self->validation;
-  $v->required('prompt')->size(1, 255);
-  $v->required('prompt', 'trim');
+  $v->required('prompt');
+  $v->required('model');
   my $prompt = $v->param('prompt');
+  my $model = $v->param('model');
   my @responses;
-  if ($v->error('prompt')) {
-    $self->flash(error => 'Invalid prompt!');
+  if ($v->error('prompt') || $v->error('model')) {
+    $self->flash(error => 'Invalid submission!');
     $prompt = '';
+    $model = '';
   }
   else {
     my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
     my $response = $openai->completions(
-        model             => 'text-davinci-003',
+        model             => $model,
         prompt            => $prompt,
         max_tokens        => 2048,
         temperature       => 0.5,
