@@ -17,7 +17,7 @@
 %   for my $r (@$responses) {
 %     $counter++;
 %     my $prompt = $r->{prompt};
-%     $prompt ~= s/<p><\/p>/ /g;
+%     $prompt =~ s/<p><\/p>/ /g;
         <div class="card">
           <div class="card-header" id="heading<%= $counter %>">
             <h2 class="mb-0">
