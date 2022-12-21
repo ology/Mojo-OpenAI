@@ -19,10 +19,10 @@ subtest index => sub {
 };
 
 subtest update => sub {
-    $t->post_ok($t->app->url_for('update'), form => { prompt => '' })
-      ->status_is(200)
-      ->content_like(qr/Invalid submission/)
-    ;
+  $t->post_ok($t->app->url_for('update'), form => { prompt => '' })
+    ->status_is(200)
+    ->content_like(qr/Invalid submission/)
+  ;
   SKIP: {
     skip 'Not testing live', 4;
     $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
