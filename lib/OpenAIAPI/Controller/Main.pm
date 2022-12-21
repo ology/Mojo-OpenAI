@@ -16,11 +16,11 @@ sub update ($self) {
   my @responses;
   my $v = $self->validation;
   $v->required('prompt')->size(1, 1024);
-  my $prompt = $v->param('prompt');
   if ($v->error('prompt')) {
     $self->flash(error => 'Invalid submission');
   }
   else {
+    my $prompt = $v->param('prompt');
     my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
     my $response = $openai->completions(
         prompt            => $prompt,
@@ -31,11 +31,11 @@ sub update ($self) {
         frequency_penalty => 0,
         presence_penalty  => 0,
     );
+    $prompt =~ s/\n+/<p><\/p>/g;
     for my $choice ($response->{choices}->@*) {
         $choice->{text} =~ s/^\s+//;
         $choice->{text} =~ s/\s+$//;
         (my $text = $choice->{text}) =~ s/\n+/<p><\/p>/g;
-        $prompt =~ s/\n+/<p><\/p>/g;
         push @responses, { prompt => $prompt, text => $text, stamp => time() };
     }
     store [], DATFILE unless -e DATFILE;
