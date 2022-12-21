@@ -9,9 +9,7 @@ use constant DATFILE => 'openaiapi.dat';
 sub index ($self) {
   store [], DATFILE unless -e DATFILE;
   my $history = retrieve(DATFILE);
-  $self->render(
-    responses => $history,
-  );
+  $self->render(responses => $history);
 }
 
 sub update ($self) {
@@ -48,9 +46,7 @@ sub update ($self) {
     $history = [ @$history[0 .. $n] ];
     store $history, DATFILE;
   }
-  $self->redirect_to(
-    $self->url_for('index')
-  );
+  $self->redirect_to($self->url_for('index'));
 }
 
 sub help ($self) { $self->render }
