@@ -18,14 +18,14 @@ sub update ($self) {
   my $prompt = $v->param('prompt');
   my @responses;
   if ($v->error('prompt')) {
-    $self->flash(error => 'Invalid submission!');
+    $self->flash(error => 'Invalid submission');
     $prompt = '';
   }
   else {
     my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
     my $response = $openai->completions(
-        model             => 'text-davinci-003',
         prompt            => $prompt,
+        model             => 'text-davinci-003',
         max_tokens        => 2048,
         temperature       => 0.5,
         top_p             => 1,
