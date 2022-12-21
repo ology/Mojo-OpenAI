@@ -1,0 +1,13 @@
+body {
+  background-color: lightblue;
+}
+.padpage {
+  padding-top: 10px;
+}
+.small {
+  font-size: small;
+  color: darkgrey;
+}
+.danger {
+  color: red;
+}
