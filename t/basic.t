@@ -29,7 +29,7 @@ subtest update => sub {
     ;
     $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
       ->status_is(200)
-      ->element_exists('textarea[name=prompt][data-info=xyz]')
+      ->element_exists('div[class=card]')
     ;
   };
 };
