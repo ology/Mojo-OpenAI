@@ -3,7 +3,7 @@
         <div class="form-group">
           <textarea class="form-control" id="prompt" name="prompt" cols="" rows="4" placeholder="Text prompt"></textarea>
         </div>
-        <input type="submit" class="btn btn-sm btn-primary" name="submit" value="Submit" title="Submit form">
+        <input type="submit" class="btn btn-sm btn-primary btn-block" name="submit" value="Submit" title="Submit form">
       </form>
 % if (@$responses) {
       <p></p>
