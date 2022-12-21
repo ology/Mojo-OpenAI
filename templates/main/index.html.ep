@@ -1,9 +1,8 @@
 % layout 'default';
       <form action="<%= url_for('update') %>" method="post">
-        <div class="form-group form-row">
+        <div class="form-group">
           <label for="prompt"><b>Prompt:</b></label>
           <textarea class="form-control" id="prompt" name="prompt" cols="" rows="4" placeholder="Text prompt" aria-describedby="promptHelp"></textarea>
-          <br>
           <small id="promptHelp" class="form-text text-muted">Required</small>
         </div>
         <input type="submit" class="btn btn-sm btn-primary" name="submit" value="Submit" title="Submit form">
