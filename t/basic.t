@@ -1,7 +1,10 @@
 use Mojo::Base -strict;
 
+use Test::Exception;
 use Test::More;
 use Test::Mojo;
+
+use_ok 'OpenAIAPI::Controller::Main';
 
 my $t = Test::Mojo->new('OpenAIAPI');
 
@@ -18,16 +21,17 @@ subtest index => sub {
 };
 
 subtest update => sub {
-SKIP: { skip 'Not testing live', 4;
-  $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
-    ->status_is(200)
-    ->element_exists('textarea[name=prompt][data-info=xyz]')
-  ;
-  $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
-    ->status_is(200)
-    ->content_like(qr/Invalid/)
-  ;
-}
+  SKIP: {
+    skip 'Not testing live', 4;
+    $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
+      ->status_is(200)
+      ->element_exists('textarea[name=prompt][data-info=xyz]')
+    ;
+    $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
+      ->status_is(200)
+      ->content_like(qr/Invalid/)
+    ;
+  };
 };
 
 subtest help => sub {
