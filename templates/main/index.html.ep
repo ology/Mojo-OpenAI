@@ -6,12 +6,6 @@
           <br>
           <small id="promptHelp" class="form-text text-muted">Required</small>
         </div>
-        <div class="form-group form-row">
-          <select name="model" title="Choose a model" class="btn btn-sm">
-            <option value="text-davinci-003">Natural language</option>
-            <option value="code-davinci-002">Code</option>
-          </select>
-        </div>
         <input type="submit" class="btn btn-sm btn-primary" name="submit" value="Submit" title="Submit form">
       </form>
 % if (@$responses) {
