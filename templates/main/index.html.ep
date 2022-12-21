@@ -2,7 +2,7 @@
       <form action="<%= url_for('update') %>" method="post">
         <div class="form-group form-row">
           <label for="prompt"><b>Prompt:</b></label>
-          <textarea class="form-control" id="prompt" name="prompt" cols="" rows="4" placeholder="Text prompt" aria-describedby="promptHelp" data-info="<%= $prompt %>"><%= $prompt %></textarea>
+          <textarea class="form-control" id="prompt" name="prompt" cols="" rows="4" placeholder="Text prompt" aria-describedby="promptHelp"></textarea>
           <br>
           <small id="promptHelp" class="form-text text-muted">Required</small>
         </div>
@@ -20,13 +20,13 @@
           <div class="card-header" id="heading<%= $counter %>">
             <h2 class="mb-0">
               <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<%= $counter %>" aria-expanded="true" aria-controls="collapse<%= $counter %>">
-                <%= $counter %>. <%= length $prompt > 20 ? substr($prompt, 0, 50) . '...' : $prompt %> (<%= scalar localtime $r->{stamp} %>)
+                <%= $counter %>. <%= length $r->{prompt} > 20 ? substr($r->{prompt}, 0, 50) . '...' : $r->{prompt} %> (<%= scalar localtime $r->{stamp} %>)
               </button>
             </h2>
           </div>
           <div id="collapse<%= $counter %>" class="collapse show" aria-labelledby="heading<%= $counter %>" data-parent="#accordionHistory">
             <div class="card-body">
-              <p><b>Prompt:</b> <%== $prompt %></p>
+              <p><b>Prompt:</b> <%== $r->{prompt} %></p>
               <p><b>Response:</b> <%== $r->{text} %></p>
             </div>
           </div>
