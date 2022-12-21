@@ -22,7 +22,7 @@ subtest update => sub {
     ->content_like(qr/Invalid submission/)
   ;
   SKIP: {
-    skip 'Not testing live', 4;
+    skip 'Not testing live', 5;
     $t->post_ok($t->app->url_for('update'), form => { prompt => 'x' x 2000 })
       ->status_is(200)
       ->content_like(qr/Invalid submission/)
@@ -30,6 +30,7 @@ subtest update => sub {
     $t->post_ok($t->app->url_for('update'), form => { prompt => 'xyz' })
       ->status_is(200)
       ->element_exists('div[class=card]')
+      ->content_like(qr/xyz/)
     ;
   };
 };
