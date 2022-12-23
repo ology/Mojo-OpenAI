@@ -1,5 +1,4 @@
 % layout 'default';
-<hr>
 <ul>
   <li>What? <a href="https://openai.com/">OpenAI</a> is the company, and <a href="https://beta.openai.com/docs">this</a> is the documentation.</li>
   <li>Why? For fun/curiosity.</li>
