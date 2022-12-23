@@ -1,6 +1,6 @@
 % layout 'default';
       <ul>
-        <li>What? <a href="https://openai.com/">OpenAI</a> - the company. The <a href="https://beta.openai.com/docs">Documentation</a></li>
+        <li>What? <a href="https://openai.com/">OpenAI</a> is the company, and <a href="https://beta.openai.com/docs">this</a> is the documentation.</li>
         <li>Why? For fun/curiosity.</li>
         <li>How? By using the <a href="https://metacpan.org/pod/OpenAI::API">OpenAI::API</a> Perl module.</li>
         <li>Where? This code can be found in the <a href="https://github.com/ology/Mojo-OpenAI">Mojo-OpenAI</a> GitHub repository.</li>
