@@ -24,7 +24,7 @@ sub update ($self) {
     my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
     my $response = $openai->completions(
         prompt            => $prompt,
-        model             => 'text-davinci-003',
+        model             => 'text-davinci-003',#'code-davinci-002',
         max_tokens        => 2048,
         temperature       => 0.5,
         top_p             => 1,
