@@ -23,7 +23,7 @@
           <div id="collapse<%= $counter %>" class="collapse <%= $counter == 1 ? 'show' : '' %>" aria-labelledby="heading<%= $counter %>" data-parent="#accordionHistory">
             <div class="card-body">
               <p><b>Prompt:</b> <%== $r->{prompt} %></p>
-              <p><b>Response:</b><%== $r->{text} %></p>
+              <p><b>Response:</b> <%== $r->{text} %></p>
             </div>
           </div>
         </div>
