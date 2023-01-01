@@ -33,10 +33,14 @@ sub update ($self) {
     );
     $prompt =~ s/\n+/<p><\/p>/g;
     for my $choice ($response->{choices}->@*) {
-        $choice->{text} =~ s/^\s+//;
-        $choice->{text} =~ s/\s+$//;
-        (my $text = $choice->{text}) =~ s/\n+/<p><\/p>/g;
-        $text =~ s/\s/&nbsp;/g;
+        my $text = $choice->{text};
+        $text =~ s/^\s*|\s*$//;
+        if ($text =~ /  /) {
+            $text = '<pre>' . $text . '</pre>';
+        }
+        else {
+            $text =~ s/\n+/<p><\/p>/g;
+        }
         push @responses, { prompt => $prompt, text => $text, stamp => time() };
     }
     store [], DATFILE unless -e DATFILE;
