@@ -1,7 +1,7 @@
 % layout 'default';
       <form action="<%= url_for('update') %>" method="post">
         <div class="form-group">
-          <textarea class="form-control" id="prompt" name="prompt" cols="" rows="4" placeholder="Text prompt" autofocus></textarea>
+          <textarea class="form-control" id="prompt" name="prompt" cols="" rows="4" placeholder="Text prompt" autofocus><%= $last_prompt %></textarea>
         </div>
         <input type="submit" class="btn btn-sm btn-primary btn-block" name="submit" value="Submit" title="Submit text">
       </form>

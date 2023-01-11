@@ -7,28 +7,32 @@ use Storable qw(retrieve store);
 use constant DATFILE => 'openaiapi.dat';
 
 sub index ($self) {
+  my $prompt = $self->param('last_prompt') || '';
   store [], DATFILE unless -e DATFILE;
   my $history = retrieve(DATFILE);
-  $self->render(responses => $history);
+  $self->render(
+    responses   => $history,
+    last_prompt => $prompt,
+  );
 }
 
 sub update ($self) {
-  store [], DATFILE unless -e DATFILE;
-  my $history = retrieve(DATFILE);
-  if (@$history && (time() - $history->[0]{stamp}) < 60) {
-    $self->flash(error => 'One submission per minute allowed. Please be patient.');
-    return $self->redirect_to('index');
-  }
-
   my $v = $self->validation;
   $v->required('prompt')->size(1, 1024);
   if ($v->error('prompt')) {
     $self->flash(error => 'Invalid submission');
     return $self->redirect_to('index');
   }
+  my $prompt = $v->param('prompt');
+
+  store [], DATFILE unless -e DATFILE;
+  my $history = retrieve(DATFILE);
+  if (@$history && (time() - $history->[0]{stamp}) < 60) {
+    $self->flash(error => 'One submission per minute allowed. Please be patient.');
+    return $self->redirect_to($self->url_for('index')->query(last_prompt => $prompt));
+  }
 
   my @responses;
-  my $prompt = $v->param('prompt');
 
   my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
   my $response = $openai->completions(
