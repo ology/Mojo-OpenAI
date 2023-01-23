@@ -56,7 +56,7 @@ sub update ($self) {
       else {
           $text =~ s/\n+/<p><\/p>/g;
       }
-      push @responses, { prompt => $prompt, text => $text, stamp => time() };
+      push @responses, { prompt => $prompt, text => $text, stamp => time(), ip => $self->tx->remote_address };
   }
 
   $history = [ grep { defined $_ } @$history ];
