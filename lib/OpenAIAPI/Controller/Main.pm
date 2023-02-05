@@ -77,7 +77,7 @@ sub update ($self) {
 
   $history = [ grep { defined $_ } @$history ];
   unshift @$history, @responses;
-  my $n = $#$history > 19 ? 19 : $#$history;
+  my $n = $#$history > 19 ? 19 : $#$history; # only save the last 20
   $history = [ @$history[0 .. $n] ];
   store $history, DATFILE;
 
