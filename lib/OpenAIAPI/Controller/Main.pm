@@ -1,10 +1,12 @@
 package OpenAIAPI::Controller::Main;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
+use Geo::IP::PurePerl;
 use OpenAI::API ();
 use Storable qw(retrieve store);
 
 use constant DATFILE => 'openaiapi.dat';
+use constant GEODAT  => $ENV{HOME} . '/geoip/GeoLiteCity.dat';
 
 sub index ($self) {
   my $prompt = $self->param('last_prompt') || '';
@@ -47,6 +49,14 @@ sub update ($self) {
 
   $prompt =~ s/\n+/<p><\/p>/g;
 
+  my $ip = $self->tx->remote_address;
+  my $gi = Geo::IP::PurePerl->new(GEODAT, GEOIP_STANDARD);
+  my @location = $gi->get_city_record($ip);
+  my $location = @location
+      ? join( ', ', grep { $_ ne '' } @location[ 4, 3, 2 ] )
+      : $ip;
+  $location =~ s/, United States//;
+
   for my $choice ($response->{choices}->@*) {
       my $text = $choice->{text};
       $text =~ s/^\s*|\s*$//;
@@ -56,7 +66,13 @@ sub update ($self) {
       else {
           $text =~ s/\n+/<p><\/p>/g;
       }
-      push @responses, { prompt => $prompt, text => $text, stamp => time(), ip => $self->tx->remote_address };
+      push @responses, {
+        prompt => $prompt,
+        text   => $text,
+        stamp  => time(),
+        ip     => $ip,
+        geo    => $location,
+      };
   }
 
   $history = [ grep { defined $_ } @$history ];
