@@ -53,7 +53,7 @@ sub update ($self) {
   my $gi = Geo::IP::PurePerl->new(GEODAT, GEOIP_STANDARD);
   my @location = $gi->get_city_record($ip);
   my $location = @location
-      ? join(', ', grep { $_ ne '' } @location[ 4, 3, 2 ])
+      ? join(', ', grep { $_ ne '' } @location[4,3,2])
       : $ip;
   $location =~ s/, United States//;
 
