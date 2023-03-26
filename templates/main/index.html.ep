@@ -24,7 +24,7 @@
             <div class="card-body">
               <p>
                 <b>Time:</b> <%== scalar localtime $r->{stamp} %>
-                - <b>IP:</b> <%== $r->{ip} %>
+                - <b>IP:</b> <%== $r->{ip} || 'unknown' %>
 %     if ($r->{geo}) {
                 (<%== $r->{geo} %>)
 %     }
