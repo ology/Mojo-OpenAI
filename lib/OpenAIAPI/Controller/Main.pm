@@ -37,7 +37,8 @@ sub update ($self) {
 
   my $response = _get_response('user', $prompt);
 
-  # $prompt =~ s/\n+/<p><\/p>/g;
+  $prompt =~ s/\n+/<p><\/p>/g;
+  $response =~ s/\n+/<p><\/p>/g;
 
   # my $ip = $self->tx->remote_address;
   # my $gi = Geo::IP::PurePerl->new(GEODAT, GEOIP_STANDARD);
