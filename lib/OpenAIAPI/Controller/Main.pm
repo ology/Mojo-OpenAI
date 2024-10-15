@@ -68,10 +68,10 @@ sub update ($self) {
 sub help ($self) { $self->render }
 
 sub _get_response ($role, $prompts) {
-  my @messages = map { qq/'{"role": "$role", "content": "$_"}'/  } @$prompts;
-  my $json_string = encode_json([@messages]);
+  my @messages = map { +{ role => $role, content => $_} } @$prompts;
   return unless @messages;
-  my @cmd = (qw(python3 scripts/chat.py), @messages);
+  my $json_string = encode_json([@messages]);
+  my @cmd = (qw(python3 script/chat.py), $json_string);
   my $stdout = capture_stdout { system(@cmd) };
   chomp $stdout;
   return $stdout;
