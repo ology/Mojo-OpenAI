@@ -1,12 +1,13 @@
 package OpenAIAPI::Controller::Main;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-use Geo::IP::PurePerl;
-use OpenAI::API ();
+use Capture::Tiny qw(capture_stdout);
+# use Geo::IP::PurePerl;
+use JSON::MaybeXS qw(encode_json);
 use Storable qw(retrieve store);
 
 use constant DATFILE => 'openaiapi.dat';
-use constant GEODAT  => $ENV{HOME} . '/geoip/GeoLiteCity.dat';
+# use constant GEODAT  => $ENV{HOME} . '/geoip/GeoLiteCity.dat';
 
 sub index ($self) {
   my $prompt = $self->param('last_prompt') || '';
@@ -34,46 +35,26 @@ sub update ($self) {
     return $self->redirect_to($self->url_for('index')->query(last_prompt => $prompt));
   }
 
-  my @responses;
-
-  my $openai = OpenAI::API->new(api_key => $self->config('api-key'));
-  my $response = $openai->completions(
-      prompt            => $prompt,
-      model             => 'text-davinci-003',#'code-davinci-002',
-      max_tokens        => 2048,
-      temperature       => 0.5,
-      top_p             => 1,
-      frequency_penalty => 0,
-      presence_penalty  => 0,
-  );
+  my $response = _get_response('user', [$prompt]);
 
   $prompt =~ s/\n+/<p><\/p>/g;
 
-  my $ip = $self->tx->remote_address;
-  my $gi = Geo::IP::PurePerl->new(GEODAT, GEOIP_STANDARD);
-  my @location = $gi->get_city_record($ip);
-  my $location = @location
-      ? join(', ', grep { $_ ne '' } @location[4,3,2])
-      : $ip;
-  $location =~ s/, United States//;
+  # my $ip = $self->tx->remote_address;
+  # my $gi = Geo::IP::PurePerl->new(GEODAT, GEOIP_STANDARD);
+  # my @location = $gi->get_city_record($ip);
+  # my $location = @location
+      # ? join(', ', grep { $_ ne '' } @location[4,3,2])
+      # : $ip;
+  # $location =~ s/, United States//;
 
-  for my $choice ($response->{choices}->@*) {
-      my $text = $choice->{text};
-      $text =~ s/^\s*|\s*$//;
-      if ($text =~ /  /) {
-          $text = '<pre>' . $text . '</pre>';
-      }
-      else {
-          $text =~ s/\n+/<p><\/p>/g;
-      }
-      push @responses, {
-        prompt => $prompt,
-        text   => $text,
-        stamp  => time(),
-        ip     => $ip,
-        geo    => $location,
-      };
-  }
+  my @responses;
+  push @responses, {
+    prompt => $prompt,
+    text   => $response,
+    stamp  => time(),
+    ip     => '', #$ip,
+    geo    => '', #$location,
+  };
 
   $history = [ grep { defined $_ } @$history ];
   unshift @$history, @responses;
@@ -85,5 +66,15 @@ sub update ($self) {
 }
 
 sub help ($self) { $self->render }
+
+sub _get_response ($role, $prompts) {
+  my @messages = map { qq/'{"role": "$role", "content": "$_"}'/  } @$prompts;
+  my $json_string = encode_json([@messages]);
+  return unless @messages;
+  my @cmd = (qw(python3 scripts/chat.py), @messages);
+  my $stdout = capture_stdout { system(@cmd) };
+  chomp $stdout;
+  return $stdout;
+}
 
 1;
