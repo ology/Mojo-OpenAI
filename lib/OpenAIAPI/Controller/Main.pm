@@ -37,7 +37,7 @@ sub update ($self) {
 
   my $response = _get_response('user', [$prompt]);
 
-  $prompt =~ s/\n+/<p><\/p>/g;
+  # $prompt =~ s/\n+/<p><\/p>/g;
 
   # my $ip = $self->tx->remote_address;
   # my $gi = Geo::IP::PurePerl->new(GEODAT, GEOIP_STANDARD);
@@ -68,8 +68,8 @@ sub update ($self) {
 sub help ($self) { $self->render }
 
 sub _get_response ($role, $prompts) {
+  return unless $prompts && @$prompts;
   my @messages = map { +{ role => $role, content => $_} } @$prompts;
-  return unless @messages;
   my $json_string = encode_json([@messages]);
   my @cmd = (qw(python3 script/chat.py), $json_string);
   my $stdout = capture_stdout { system(@cmd) };
