@@ -1,3 +1,4 @@
+import json
 from openai import OpenAI
 import os
 import sys
@@ -12,10 +13,13 @@ def get_response(messages):
     return content
 
 def main():
+    response = ""
     if sys.argv[1]:
-        messages = sys.argv[1:]
-        response = get_response(messages)
-        print(response)
+        messages = sys.argv[1]
+        if messages:
+            messages = json.loads(messages)
+            response = get_response(messages)
+    print(response)
 
 if __name__ == "__main__":
     main()
