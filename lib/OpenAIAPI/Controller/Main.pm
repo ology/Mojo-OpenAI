@@ -35,7 +35,7 @@ sub update ($self) {
     return $self->redirect_to($self->url_for('index')->query(last_prompt => $prompt));
   }
 
-  my $response = _get_response('user', [$prompt]);
+  my $response = _get_response('user', $prompt);
 
   # $prompt =~ s/\n+/<p><\/p>/g;
 
@@ -67,10 +67,10 @@ sub update ($self) {
 
 sub help ($self) { $self->render }
 
-sub _get_response ($role, $prompts) {
-  return unless $prompts && @$prompts;
-  my @messages = map { +{ role => $role, content => $_} } @$prompts;
-  my $json_string = encode_json([@messages]);
+sub _get_response ($role, $prompt) {
+  return unless $prompt;
+  my @message = { role => $role, content => $prompt };
+  my $json_string = encode_json([@message]);
   my @cmd = (qw(python3 script/chat.py), $json_string);
   my $stdout = capture_stdout { system(@cmd) };
   chomp $stdout;
